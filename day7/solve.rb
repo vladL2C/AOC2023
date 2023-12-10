@@ -37,11 +37,8 @@ class Solve
   end
 
   def self.permute_jokers(hand, joker_count)
-    CARD_RANKS.keys.reject { |key| key == JOKER }.map do |val|
-      new_hand = hand.cards.tr(JOKER, val)
-      new_tally = new_hand.chars.tally
-      new_tally.values.sort.reverse
-    end
+    CARD_RANKS.keys.reject { |key| key == JOKER }
+      .map { |val| hand.cards.tr(JOKER, val).chars.tally.values.sort.reverse }
       .max
   end
 
