@@ -1,17 +1,27 @@
 class Solve
   @@input = File.read("input.txt")
   START_NODE = "AAA"
-  END_NODE = "ZZZ"
+  END_NODE = "Z"
   DIRECTION_L = "L"
   DIRECTION_R = "R"
 
   def self.part_1
-    ops, nodes = parsed_data
+    find(START_NODE, *parsed_data)
+  end
 
-    curr_node = START_NODE
+  def self.part_2
+    ops, nodes = parsed_data
+    nodes
+      .keys
+      .select { |k| k.end_with?(START_NODE.slice(0, 1)) }
+      .map { |k| find(k, ops.dup, nodes) }
+      .inject(&:lcm)
+  end
+
+  def self.find(curr_node, ops, nodes)
     count = 0
 
-    while curr_node != END_NODE
+    until curr_node.end_with?(END_NODE)
       direction = ops.shift
 
       if direction == DIRECTION_L
@@ -42,5 +52,5 @@ class Solve
     [ops, nodes]
   end
 end
-
 p Solve.part_1
+p Solve.part_2
